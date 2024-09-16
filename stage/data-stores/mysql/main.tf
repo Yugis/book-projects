@@ -1,3 +1,16 @@
+terraform {
+  backend "s3" {
+    # Replace this with your bucket name!
+    bucket = "terraform-up-and-running-state-66e15a2626bc6"
+    key    = "stage/data-stores/mysql/terraform.tfstate"
+    region = "us-east-2"
+
+    # Replace this with your DynamoDB table name!
+    dynamodb_table = "terraform-up-and-running-locks"
+    encrypt        = true
+  }
+}
+
 provider "aws" {
   region = "us-east-2"
 }
@@ -10,6 +23,6 @@ resource "aws_db_instance" "example" {
   skip_final_snapshot = true
   db_name             = "example_database"
 
-  username = "var.db_username"
-  password = "var.db_password"
+  username = var.db_username
+  password = var.db_password
 }
